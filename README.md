@@ -9,7 +9,5 @@ hello
 다시 테스트  
 안녕하세요  
 mine1  
-mine2
-
-
-
+mine2  
+mine1 다시추가
