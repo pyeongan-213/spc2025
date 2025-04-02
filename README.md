@@ -8,6 +8,7 @@ hello
 내 파일 자체 수정  
 다시 테스트  
 안녕하세요  
+mine2 다시추가  
 mine1  
 mine2  
 mine1 다시추가
