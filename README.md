@@ -1,4 +1,3 @@
-#한국소프트웨어저작권협회 수업업
 Hello  
 Goodbye  
 Hello Again  
