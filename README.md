@@ -11,4 +11,5 @@ hello
 mine2 다시추가  
 mine1  
 mine2  
-mine1 다시추가
+mine1 다시추가  
+mine1 마지막으로 추가
