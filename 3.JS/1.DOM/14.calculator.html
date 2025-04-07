@@ -54,13 +54,37 @@
         //미션1. 7번 입력하기
         //미션2. 8번 입력하기
         //미션3. 새로운 숫자로 쓸게 아니고, 원래 있던 숫자 뒤에 이어서 더해서 붙이기
-        function clickNumber(value) {
-            const inputBox = document.getElementById("result");
-            inputBox.value = inputBox.value + value;
+        list = [];
+
+        function pushList(value) {
+            list.push(value);
         }
 
-        function clickSymbol() {
+        function clickNumber(value) {
+            const inputBox = document.getElementById("result");
+            console.log("기존input:", inputBox);
+            if (inputBox.value != isNaN(inputBox.value) || inputBox.value == "") {
+                inputBox.value = inputBox.value + value;
+                console.log("입력input:", inputBox.value);
+            } else {
+                inputBox.value = "";
+            }
+            pushList(inputBox.value);
+            console.log("리스트:", list);
+            
+        }
+
+        function clickSymbol(value) {
             //숙제1. 심볼은 하나만 입력되어야함. (나의 이전 문자를 보고, 이전에 숫자가 있을때만 심볼 누르기)
+            const inputBox = document.getElementById("result");
+
+            if (inputBox.value == "") {
+                inputBox.value == "";
+            } else {
+                inputBox.value = value;
+                list.push(inputBox.value)
+            }
+            
         }
         //숙제2. 연산을 실제로 해야함 (=을 클릭하면 그 연산 수행하기)
     </script>
