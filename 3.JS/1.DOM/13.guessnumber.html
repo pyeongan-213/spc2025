@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <h1>숫자 맞추기 게임</h1>
+    <h2>1~100까지의 숫자 맞추기</h2>
+    <input type="number" id="guessNumber" placeholder="숫자를 입력하시오">
+    <button id="guessButton" onclick="checkUserInput()">Guess</button>
+    <p id="result"></p>
+    <ol id="history"></ol>
+    <script>
+        //미션1. 랜덤 숫자를 만들고 기억해둔다.
+        const randomNumber = Math.floor(Math.random() * 100) + 1; // +1을 하지 않으면 범위가 0 <= x < 100 으로 나오기 때문
+        console.log("랜덤숫자:", randomNumber);
+
+        //미션2. 사용자가 입력한 값을 보고, 내가 생각한 숫자보다 작으면? "숫자가 너무 작아요",
+        //      더 크면? "숫자가 너무 커요", 같으면? "정답입니다 축하합니다"
+        //      힌트1: getElementById로 result를 가져다가 결과를 작성
+        //      힌트2: if 로 비교하는게 다
+        const userInput = document.getElementById('guessNumber');
+        const result = document.getElementById('result');
+        const history = document.getElementById('history');
+        //console.log(userInput);
+
+        function checkUserInput() {
+            const userInputValue = Number(userInput.value);
+            console.log("사용자입력:", userInputValue);
+            let resultText = "";
+
+            if (userInputValue < randomNumber) {
+                resultText = "숫자가 작음";
+            } else if (userInputValue > randomNumber) {
+                resultText = "숫자가 큼";
+            } else {
+                resultText = "정답";
+                //result.innerHTML = '<B style="color:red">' + resultText + '</B>';  //'', "" 활용
+            }
+            
+            console.log(resultText);
+            //result.innerHTML = "<B>" + resultText + "</B>"; //innerText를 사용하면 <B> 태그가 문자열로 나옴
+            result.innerHTML = `<B>${resultText}</B>`;
+
+            //미션4. 나의 찍기 기록을 계속 화면에 두고싶음
+            const newResult = document.createElement("li");
+            //newResult.innerHTML = "사용자입력: " + userInputValue + ", " + resultText;
+            newResult.innerHTML = `사용자입력: ${userInputValue}, ${resultText}`;
+
+            console.log(newResult);
+            history.appendChild(newResult);
+
+            //미션5. 각각의 입력값 뒤에 그 결과도 함께 찍기
+        }
+
+        //미션3. 풀이를 하면서 어떻게 숫자를 찍어야 가장 좋은것인가? 나는 몇번만에 맞출 수 있을까?
+        //      몇번만에 맞추는게 이론적으로 가장 좋은건가? 가장 큰 숫자인가?
+        //      나의 방법으로 이 게임을 하면 아무리 못해도 N번만에 나는 무조건 풀수있다.
+        //계산 바이너리 서치 수학적인 계산식 log2(100) = 6.64 = 7번을 찍어야한다.
+
+        //내 방법 - 랜덤숫자생성 범위가 0 <= x < 100 이므로 원래의 미션에는 부적합
+        // let inputNum = document.getElementById('guessNumber');
+        // const randomNum = Math.floor(Math.random() * 100);
+        // console.log(randomNum);
+
+        // let guess = 0;
+
+        // function guessStart() {
+        //     guess = Number(inputNum.value);
+        //     console.log(guess, randomNum);
+
+        //     if (guess < randomNum) {
+        //         document.getElementById('result').innerText = "숫자가 너무 작아요";
+        //         inputNum.value = "";
+        //     } else if (guess > randomNum) {
+        //         document.getElementById('result').innerText = "숫자가 너무 커요";
+        //         inputNum.value = "";
+        //     } else {
+        //         document.getElementById('result').innerText = "정답입니다 축하합니다";
+        //         inputNum.value = "";
+        //     }
+        // }
+        
+    </script>
+</body>
+</html>
