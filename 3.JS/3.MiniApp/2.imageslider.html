@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1 {
+            text-align: center;
+        }
+        .slider {
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
+            align-items: center;
+        }
+        .slider > img {
+            width: 200px;
+            height: 200px;
+            display: none;
+        }
+        .slider img.active {
+            display: block;
+        }
+        .buttons {
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>이미지 슬라이더</h1>
+    <div class="slider">
+        <img id="img1" src="images/cat1.jpg" class="active" alt="고양이1">
+        <img id="img2" src="images/cat2.jpg" alt="고양이2">
+        <img id="img3" src="images/cat3.jpg" alt="고양이3">
+        <div class="filename" id="filename">images/cat1.jpg</div>
+
+        <div class="buttons">
+            <button id="prev">이전</button>
+            <button id="next">다음</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. 버튼 가져다가, 클릭하면, clas=active를 다음거로 이동하게
+
+        // 주요관점1: class를 어떻게 이동하느냐?
+        // 주요관점2: 이미지가 끝까지 갔을떄 다시 처음으로 오려면? (또는 반대)
+
+        // 언제나, 복잡한 연산을 자꾸 한번에 하려고 하지 마라. 작게 작게 최소 단위로 하나씩 구현해볼것
+
+        const images = document.querySelectorAll('.slider img');
+        let currentIndex = 0;
+
+        document.getElementById('prev').addEventListener('click', () => {
+            images[currentIndex].classList.remove('active');
+            // currentIndex = currentIndex - 1;
+            // if (currentIndex < 0) {
+            //     currentIndex = images.length - 1;
+            // }
+
+            // if (currentIndex === 0) {
+            //     currentIndex = images.length - 1;
+            // } else {
+            //     currentIndex = currentIndex - 1;
+            // }
+
+            // if...else 멀티라인을 1줄로 코딩하는 기법을 "3항 연산자"
+            // currentIndex = if () xxx : yyy;
+            currentIndex = (currentIndex === 0) ? images.length - 1 : currentIndex - 1;
+
+            images[currentIndex].classList.add('active');
+            updateFilename();
+        });
+
+        document.getElementById('next').addEventListener('click', () => {
+            images[currentIndex].classList.remove('active');
+            // currentIndex = currentIndex + 1;
+            // if (currentIndex > images.length - 1) {
+            //     currentIndex = 0;
+            // }
+
+            currentIndex = (currentIndex === images.length - 1) ? 0 : currentIndex + 1;
+
+            images[currentIndex].classList.add('active');
+            updateFilename();
+        });
+
+        function updateFilename() {
+            const filename = document.getElementById('filename');
+            // full path가 나오는데 내가 원하는건 파일명만
+            const shortfilename = images[currentIndex].src.split('/').pop();   // '/'로 잘라낸 리스트의 맨 뒤의 아이템 하나만 뽑아오기
+            // console.log(shortfilename);
+            filename.textContent = shortfilename;
+        }
+
+        // 최초 로딩시에도 경로 제외하고 파일명만 남기기 위해서 함수 최초 호출...
+        updateFilename();
+
+        // document.getElementById('next').addEventListener('click', function() {
+        //     document.querySelectorAll('.slider img').forEach(function(img) {
+
+        //         if (img.className == 'active') {
+        //             img.classList.remove('active');
+        //         } else {
+        //             img.classList.add('active');
+        //         }
+        //         const fileName = document.getElementById('filename');
+        //         fileName.innerText = img.src;
+        //     });
+        // });
+    </script>
+</body>
+</html>

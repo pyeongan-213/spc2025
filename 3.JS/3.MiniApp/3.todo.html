@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <h1>투두(Todo) 리스트</h1>
+    <input id="new-todo" type="text" placeholder="할 일 추가">
+    <button id="add-todo">Add</button>
+    <hr>
+    <ul id="todo-list"></ul>
+    <script>
+        document.getElementById('add-todo').addEventListener('click', () => {
+            //미션1. 투두리스트 동작시키기
+            //미션1-1. 입력창 안에 있는 값을 가져온다.
+            const inputBox = document.getElementById('new-todo');
+            // console.log(todoString);
+
+            //미션1-2. ul 을 가져다가
+            const todoList = document.getElementById('todo-list');
+
+            //입력값 검증한다 - 입력값이 비었으면, 추가하지 않음.
+            if (inputBox.value.trim() === '') return;
+
+            //미션1-3. li를 새로 만들어서 ul에다가 추가한다.
+            const new_li = document.createElement('li');
+            new_li.textContent = inputBox.value;
+            todoList.appendChild(new_li);
+
+            // 화면에 있는 입력값 DOM 요소를 초기화
+            inputBox.value = "";
+
+            // console.log("초기화전:", todoString);
+            // document.getElementById('new-todo').value = ""; // != todoString = ""; todoString은 복사본이기 때문에 value값을 직접 바꿔줘야한다
+            // console.log("초기화후:", todoString);
+
+            // const inputText = document.getElementById('inputText');
+            // const todoList = document.getElementById('todo-list');
+            // todoList.appendChild(document.createElement('li'), inputText.value);
+
+        });
+
+        document.getElementById('new-todo').addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                document.getElementById('add-todo').click();
+
+                // const inputBox = document.getElementById('new-todo');
+                // const todoList = document.getElementById('todo-list');
+                // const new_li = document.createElement('li');
+                // new_li.textContent = inputBox.value;
+                // todoList.appendChild(new_li);
+                // inputBox.value = "";
+            }
+        });
+    </script>
+</body>
+</html>
