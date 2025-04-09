@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스탑워치 앱</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column; /* 수직 정렬 */
+            align-items: center;    /* 센터 중앙 정렬 */
+            margin: 0;
+            height: 100vh;  /* 화면 전체 크기 */
+            justify-content: center;    /*  */
+            background-color: rgb(219, 219, 219);
+        }
+        #display {
+            font-size: 48px;
+        }
+        .button-container {
+            gap: 10px;
+        }
+        .button-container button {
+            padding: 10px 20px;
+            font-size: 18px;
+        }
+
+        /* body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: 0;
+            align-items: center;
+        }
+        h1 {
+            text-align: center;
+            font-size: 100px;
+            margin-top: 15%;
+        }
+        button {
+            padding: 20px 40px;
+            align-items: center;
+            margin: 0 auto;
+            margin: 10px;
+        } */
+    </style>
+</head>
+<body>
+    <div id="display">00:00.00</div>
+    <div class="button-container">
+        <button id="startButton">Start</button>
+        <button id="StopButton">Stop</button>
+        <button id="ResetButton">Reset</button>
+    </div>
+
+    <!-- <h1 id="stopwatch">00:00.00</h1>
+    <div>
+        <button id="startBtn">start</button>
+        <button id="stopBtn">stop</button>
+        <button id="resetBtn">reset</button>
+    </div> -->
+
+    <script>
+        const startButton = document.getElementById('startButton');
+        const StopButton = document.getElementById('StopButton');
+        const ResetButton = document.getElementById('ResetButton');
+        const display = document.getElementById('display');
+
+        let startTime;  // 스탑워치 시작 시간
+        let updatedTime;    // 업데이트 된 시간
+        let timerInterval;
+        let diff = 0; // 경과시간
+        let running = false; // 스탑워치의 실행 여부 (현재 실행중이냐 아니냐)
+
+        const HOUR_TO_MS = 1000 * 60 * 60;
+        const MINIUTE_TO_MS = 1000 * 60;
+
+        function startTimer() {
+            if (!running) {
+                // 실행중이 아닐때
+                startTime = new Date().getTime() - (diff);   //시작 시간 저장
+                timerInterval = setInterval(updateTimer, 100); //100 ms 단위
+                running = true;
+            } 
+        };
+
+        function updateTimer() {
+            updatedTime = new Date().getTime(); // 현재 시간 저장
+            diff = updatedTime - startTime; //경과 시간 계산 (ms)
+
+            let miniutes = Math.floor(diff % HOUR_TO_MS / MINIUTE_TO_MS); // 분 계산 (시간빼고 분 계산)
+            let seconds = Math.floor(diff % MINIUTE_TO_MS / 1000); //초 계산 (분 빼고 초 계산)
+            let milliseconds = Math.floor((diff % 1000) / 10); // 밀리초 계산 (초 빼고 밀리초 계산)
+
+            // console.log(`${miniutes}분, ${seconds}초, ${milliseconds}ms`);
+            // display.textContent = (miniutes < 10 ? '0' + miniutes : miniutes) + ':' + 
+            //                     (seconds < 10 ? '0' + seconds : seconds) + '.' + 
+            //                     (milliseconds < 10 ? '0' + milliseconds : milliseconds);
+
+            display.textContent = 
+                String(miniutes).padStart(2, '0') + ':' +
+                String(seconds).padStart(2, '0') + ':' +
+                String(milliseconds).padStart(2, '0');
+        };
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            running = false;
+        };
+
+        function resetTimer() { // 여기는 왜 running = false; 가 안들어가도 정상작동하는지 궁금
+            clearInterval(timerInterval);
+            diff = 0;
+            display.textContent = '00:00.00';
+        };
+
+        startButton.addEventListener('click', startTimer);
+        StopButton.addEventListener('click', stopTimer);
+        ResetButton.addEventListener('click', resetTimer);
+
+        // 아래는 내가 짠 코드(부족하고 생각을 더 해야함)
+        // let stopwatch = document.getElementById('stopwatch');
+        // const startBtn = document.getElementById('startBtn');
+        // const stopBtn = document.getElementById('stopBtn');
+        // const resetBtn = document.getElementById('resetBtn');
+        // let timePassed = 0;
+
+        // startBtn.addEventListener('click', () => {
+        //     let startTime = Date.now();
+        //     if (stopwatch.textContent != '00:00.00') {
+                
+        //     } else {
+                
+        //     }
+            
+        //     interval = setInterval(() => {
+        //         let time = ((Date.now() - startTime) / 1000).toFixed(2);
+        //         console.log(time);
+        //         stopwatch.textContent = `${time}`;
+        //     });
+            
+        // });
+
+        // stopBtn.addEventListener('click', () => {
+        //     clearInterval(interval);
+        // });
+
+        // resetBtn.addEventListener('click', () => {
+        //     clearInterval(interval);
+        //     stopwatch.textContent = '00:00.00';
+        // });
+    </script>
+</body>
+</html>
