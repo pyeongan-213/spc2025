@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <div class="container my-4">
+        <h1>회원가입 폼</h1>
+        <form id="exampleForm">
+            <label for="nickname" class="form-label">사용자명</label>
+            <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                    <i class="bi bi-person"></i>
+                </span>
+                <input type="text" id="nickname" name="nickname" class="form-control" placeholder="nickname" aria-label="nickname" aria-describedby="addon-wrapping" placeholder="3~10글자로 입력하세요" required>
+            </div>
+            <div id="nicknamevalidate" class="text-danger invisible">사용자명은 3글자 이상 10글자 이하로 입력해야 합니다.</div>
+
+            <label for="password" class="form-label mt-3">비밀번호</label>
+            <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                    <i class="bi bi-lock"></i>
+                </span>
+                <input type="password" id="password" name="password" class="form-control" placeholder="password" aria-label="password" aria-describedby="addon-wrapping" placeholder="대소문자,숫자/특수기호 포함 8자 이상" required>
+            </div>
+            <div id="passwordvalidate" class="text-danger invisible">비밀번호는 대소문자,숫자/특수기호 포함 8자 이상이어야 합니다.</div>
+
+            <label for="name" class="form-label mt-3">이름</label>
+            <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                    <i class="bi bi-card-heading"></i>
+                </span>
+                <input type="text" id="name" name="name" class="form-control" placeholder="name" aria-label="name" aria-describedby="addon-wrapping" placeholder="3~10글자로 입력하세요" required>
+            </div>
+            <div id="namevalidate" class="text-danger invisible">이름은 3글자 이상 10글자 이하로 입력해야 합니다.</div>
+
+
+            <label for="birth" class="form-label mt-3">생년월일</label>
+            <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                    <i class="bi bi-calendar"></i>
+                </span>
+                <input type="date" id="birth" name="birth" class="form-control" placeholder="birth" aria-label="birth" aria-describedby="addon-wrapping" required>
+            </div>
+
+            <label for="interest" class="form-label mt-3">관심 분야 (최소 1개, 최대 3개 선택)</label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="관심 분야 1" id="interest1" name="interest">
+                <label class="form-check-label" for="interest1">
+                    관심 분야 1
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"  value="관심 분야 2" id="interest2" name="interest">
+                <label class="form-check-label" for="interest2">
+                    관심 분야 2
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="관심 분야 3" id="interest3" name="interest">
+                <label class="form-check-label" for="interest3">
+                    관심 분야 3
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="관심 분야 4" id="interest4" name="interest">
+                <label class="form-check-label" for="interest4">
+                    관심 분야 4
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">제출</button>
+        </form>
+
+        <div id="result" class="mt-4"></div>
+
+    </div>
+
+
+    <script>
+        const form = document.getElementById('exampleForm');
+        const resultDiv = document.getElementById('result');
+
+        const nickname = document.getElementById('nickname');
+        const password = document.getElementById('password');
+        const name = document.getElementById('name');
+        const birth = document.getElementById('birth');
+        const interest = document.querySelectorAll('input[name="interest"]:checked');
+
+        nickname.addEventListener('blur', () => {
+            if (nickname.value.length > 11 || nickname.value.length < 3) {
+                const nicknamevalidate = document.getElementById('nicknamevalidate');
+                nicknamevalidate.classList.remove('invisible');
+            } else {
+                nicknamevalidate.classList.add('invisible');
+            }
+        });
+
+        password.addEventListener('blur', () => {
+            let checkEng = /[a-zA-Z]/;
+            let checkKor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+            let checkNum = /[0-9]/;
+            let checkSpc = /[~!@#$%^&*()_+|<>?:{}]/;
+            const passwordvalidate = document.getElementById('passwordvalidate');
+            
+            if (checkEng.test(password.value) && checkKor.test(password.value) && checkNum.test(password.value) && checkSpc.test(password.value)) {
+                passwordvalidate.classList.remove('invisible');
+            } else {
+                passwordvalidate.classList.add('invisible');
+            }
+            if (password.value.length < 9) {
+                passwordvalidate.classList.remove('invisible');
+            } else {
+                passwordvalidate.classList.add('invisible');
+            }
+        });
+
+        name.addEventListener('blur', () => {
+            if (name.value.length > 11 || name.value.length < 3) {
+                const namevalidate = document.getElementById('namevalidate');
+                namevalidate.classList.remove('invisible');
+            } else {
+                namevalidate.classList.add('invisible');
+            }
+        });
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            // 폼 데이터 가져오기
+            const formData = new FormData(form);
+            const name = formData.get('name');
+            const nickname = formData.get('nickname');
+            const password = formData.get('password');
+            const birth = formData.get('birth');
+            const interests = formData.getAll('interest');
+
+            console.log(interests);
+
+            // 결과출력
+            resultDiv.innerHTML = `
+                <div class="alert alert-success">
+                    <h5>폼 데이터 제출 완료!</h5>
+                    <p><strong>닉네임: </strong> ${nickname} </p>
+                    <p><strong>비밀번호: </strong> ${password} </p>
+                    <p><strong>이름: </strong> ${name} </p>
+                    <p><strong>생년월일: </strong> ${birth} </p>
+                    <p><strong>관심분야: </strong> ${interests.join(', ')} </p>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>
