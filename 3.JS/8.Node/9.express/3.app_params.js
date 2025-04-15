@@ -18,7 +18,7 @@ app.get('/users/:id/profile', (req, res) => {
     res.send(`사용자 정보 프로필 상세 페이지, ID: ${req.params.id}`);
 });
 
-// search?keyword=programing&category=javascript
+// search?keyword=programming&category=javascript
 app.get('/search', (req, res) => {
     const keyword = req.query.keyword;  // 쿼리 파라미터는 req.query 안에 담겨서 옴
     const category = req.query.category;    // 쿼리 파라미터 category라는 key의 값을 가져옴
