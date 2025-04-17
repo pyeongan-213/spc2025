@@ -23,16 +23,13 @@ async function loading() {
             myContainer.appendChild(item);
         })
         // 오래된 DOM을 찾아서 위에 지우기
-        const itemList = 100;
-        let deleteItem = (end - itemList);
-        const children = myContainer.children;
-
-        for (let i = 0; i < deleteItem; i++) {
-            if (children.length > 0) {
-                myContainer.removeChild(myContainer.firstChild);
+        if (end > 100) {
+            for (let i = 0; i < (end - 100); i++) {
+                myContainer.removeChild();
             }
         }
-        
+
+
         // 다음 로딩 준비
         start = end;
         end += NUM_OF_ITEMS_PER_PAGE;
