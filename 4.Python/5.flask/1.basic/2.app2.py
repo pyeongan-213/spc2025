@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 # from flask import request
 # from flask import jsonify
 
@@ -34,6 +34,18 @@ def get_user_by_id(user_id):
         return jsonify(user)
     else:
         return jsonify({'error': 'User not found'}) # return jsonify({'error': 'User not found'}), 404 이렇게 보내면 404 에러 전달. 지금은 200 보내고 에러메시지 전달
+
+@app.route('/search')   # /search?name=Alice
+def search_user():
+    query = request.args.get('name')
+    if not query:
+        data = {'error': 'Name is required! 한글테스트'}
+        response = make_response(jsonify(data))
+        response.headers["Content-type"] = "application/json; charset=utf-8"
+        return response
+    
+    results = [user for user in users if query.lower() in user['name'].lower()]
+    return jsonify(results)
 
 if __name__ == "__main__":
     app.run()
