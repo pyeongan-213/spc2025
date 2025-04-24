@@ -54,6 +54,7 @@ async function checkLoginStatus() {
     if (response.status === 200) {
         const data = await response.json();
         // console.log(data);
+        navshowProfile(data.username);
         return true;
     } else {
         const data = await response.json();
@@ -61,3 +62,9 @@ async function checkLoginStatus() {
         return false;
     }
 }
+
+function navshowProfile(username) {
+    document.getElementById('navusernameSpan').textContent = username + "님";
+    document.getElementById('navusernameSpan').style.display = 'block';
+    document.getElementById('navusernameSpan').style.marginTop = '9px';
+};

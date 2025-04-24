@@ -61,6 +61,7 @@ function showLoginForm() {
 };
 
 function navshowProfile(username) {
-    document.getElementById('navusernameSpan').textContent = username;
+    document.getElementById('navusernameSpan').textContent = username + "님";
     document.getElementById('navusernameSpan').style.display = 'block';
+    document.getElementById('navusernameSpan').style.marginTop = '9px';
 };

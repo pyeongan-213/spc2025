@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     displayTable(data);
 
+    checkLoginStatus();
+
     // document.getElementById('logoutBtn').addEventListener('click', async (e) => {
     //     e.preventDefault();
     //     const response = await fetch('/logout');
@@ -36,7 +38,8 @@ async function checkLoginStatus() {
     const response = await fetch('/api/check-login');
     if (response.status === 200) {
         const data = await response.json();
-        // console.log(data);
+        // console.log("product페이지:", data);
+        navshowProfile(data.username);
         return true;
     } else {
         const data = await response.json();
@@ -58,3 +61,9 @@ async function addToCart(productId) {
         console.log(data);
     }
 }
+
+function navshowProfile(username) {
+    document.getElementById('navusernameSpan').textContent = username + "님";
+    document.getElementById('navusernameSpan').style.display = 'block';
+    document.getElementById('navusernameSpan').style.marginTop = '9px';
+};
