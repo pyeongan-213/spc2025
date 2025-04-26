@@ -1,0 +1,131 @@
+body {
+    justify-content: center;
+    margin-top: 0;
+}
+
+#inputContainer {
+    background-color: rgb(216, 215, 215);
+    width: 44%;
+    height: 250px;
+    padding: 30px;
+    margin: 0 auto;
+}
+
+#memoContainer {
+    width: 47%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 0 auto;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+h1 {
+    font-size: 40px;
+    font-weight: normal;
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+#titleInput {
+    width: 90%;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+}
+
+#contentInput {
+    width: 90%;
+    height: 60px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 8px;
+}
+
+#imageInput {
+    margin-top: 8px;
+}
+
+#saveBtn {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: rgb(69, 126, 248);
+    color: white;
+    border: none;
+    font-size: 15px;
+    border-radius: 5px;
+}
+
+#saveBtn:hover {
+    background-color: rgb(33, 100, 245);
+    cursor: pointer;
+}
+
+.memoList {
+    /* height: 100px; */
+    /* display: ; */
+    border: rgb(134, 134, 134) solid 1px;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+.editBtn {
+    background-color: rgb(47, 167, 121);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+}
+
+.editBtn:hover {
+    background-color: rgb(16, 153, 100);
+    cursor: pointer;
+}
+
+.deleteBtn {
+    background-color: rgb(245, 218, 67);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+}
+
+.deleteBtn:hover {
+    background-color: rgb(243, 209, 17);
+    cursor: pointer;
+}
+
+.ecBtn {
+    background-color: rgb(69, 126, 248);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+}
+
+.ecBtn:hover {
+    background-color: rgb(33, 100, 245);
+    cursor: pointer;
+}
+
+#memosTitle {
+    margin-bottom: 5px;
+}
+
+#memosContent {
+    margin-bottom: 8px;
+}
+
+#editTitle {
+    height: 20px;
+    border: gray solid 1px;
+    border-radius: 2px;
+    margin-bottom: 5px;
+}
+
+#editContent {
+    height: 20px;
+    border: gray solid 1px;
+    border-radius: 2px;
+    margin-bottom: 8px;
+}

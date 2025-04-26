@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="inputContainer">
+        <h1>메모장</h1>
+        <input type="text" id="titleInput" placeholder="제목을 입력하세요."><br>
+        <input type="text" id="contentInput" placeholder="내용을 입력하세요."><br>
+        <form action="/add" enctype="multipart/form-data">
+            <input type="file" accept="image/*" id="imageInput" name="myImage">
+        </form>
+        <button id="saveBtn">저장하기</button>
+    </div>
+    
+    <div id="memoContainer">
+        <!-- 메모 추가 영역 -->
+    </div>
+    <script src="js/memo.js"></script>
+</body>
+</html>
