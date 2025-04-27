@@ -17,19 +17,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             // console.log("JS에서 메모 추가 전 데이터 확인:", title.value, content.value, imageInput);
         
-            const response = await fetch('/addMemo',{
+            await fetchToExpress('/addMemo',{
                 method: 'POST',
                 body: formData
             });
 
-            if (response.status === 200) {
-                const data = await response.json();
-                console.log("메모추가:", data);
-                bringMemo();
-                title.value = '';
-                content.value = '';
-                imageInput.value = '';
-            }
+            bringMemo();
+            title.value = '';
+            content.value = '';
+            imageInput.value = '';
+
         } else {
             // 빈 문자열일땐 작동 안함
             alert('제목과 내용을 입력해 주세요.');
@@ -40,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function bringMemo() {
     const response = await fetch('/bringMemo');
     const data = await response.json();
-    console.log("가져온 메모들", data);
+    // console.log("가져온 메모들", data);
     const memos = data;
 
     const memoContainer = document.getElementById('memoContainer');
@@ -59,14 +56,14 @@ async function bringMemo() {
         new_memo.innerHTML = `
             <div class="memobox" style="display: block;">
                 ${imgTag}
-                <div id="memosTitle">${memos[i].title}</div>
-                <div id="memosContent">${memos[i].content}</div>
+                <div class="memosTitle">${memos[i].title}</div>
+                <div class="memosContent">${memos[i].content}</div>
                 <button class="editBtn">수정</button>
                 <button class="deleteBtn" delete-memo-id="${memos[i].id}">삭제</button>
             </div>
             <div class="editbox" style="display: none;">
-                <input type="text" id="editTitle" value="${memos[i].title}"><br>
-                <input type="text" id="editContent" value="${memos[i].content}"><br>
+                <input type="text" class="editTitle" value="${memos[i].title}"><br>
+                <input type="text" class="editContent" value="${memos[i].content}"><br>
                 <form action="/add" enctype="multipart/form-data">
                     <input type="file" class="editImage" accept="image/*" name="editImage">
                     <input type="checkbox" class="deleteImageCheckbox" name="deleteImageCheckbox" value="deleteImage">
@@ -78,45 +75,54 @@ async function bringMemo() {
 
         memoContainer.appendChild(new_memo);
 
-        new_memo.querySelector('.editBtn').addEventListener('click', function () {
+        const memobox = new_memo.querySelector('.memobox');
+        const editbox = new_memo.querySelector('.editbox');
+        const editBtn = new_memo.querySelector('.editBtn');
+        const ecBtn = new_memo.querySelector('.ecBtn');
+        const deleteBtn = new_memo.querySelector('.deleteBtn');
+
+        const editTitleInput = new_memo.querySelector('.editTitle');
+        const editContentInput = new_memo.querySelector('.editContent');
+        const deleteImageCheckbox = new_memo.querySelector('.deleteImageCheckbox');
+        const editImageInput = new_memo.querySelector('.editImage');
+        const imageMemo = new_memo.querySelector('.imageMemo');
+
+        editBtn.addEventListener('click', function () {
             // console.log('수정버튼 클릭됨');
-            new_memo.querySelector('.memobox').style.display = 'none';
-            new_memo.querySelector('.editbox').style.display = 'block';
+            memobox.style.display = 'none';
+            editbox.style.display = 'block';
         });
         
-        new_memo.querySelector('.ecBtn').addEventListener('click', function () {
-            console.log('완료버튼 클릭됨');
-            const checkbox = new_memo.querySelector('.deleteImageCheckbox');
-            const editTitle = new_memo.querySelector('#editTitle').value;
-            const editContent = new_memo.querySelector('#editContent').value;
-            if (checkbox.checked) {
+        ecBtn.addEventListener('click', function () {
+            // console.log('완료버튼 클릭됨');
+            const editTitle = editTitleInput.value;
+            const editContent = editContentInput.value;
+            if (deleteImageCheckbox.checked) {
                 deleteImage(memos[i].image);
-                const imgTag = new_memo.querySelector('.imageMemo');
-                console.log("이미지 태그 확인용:", imgTag);
-                imgTag.remove();
-                editMemo(this.getAttribute('data-memo-id'), editTitle, editContent);
+                if (imageMemo) {
+                    // console.log("이미지 태그 확인용:", imageMemo);
+                    imageMemo.remove();
+                }
+                editMemo(ecBtn.getAttribute('data-memo-id'), editTitle, editContent);
             } else {
-                const updateImage = new_memo.querySelector('.editImage');
-                const img = updateImage.files[0];
+                const img = editImageInput.files[0];
                 if(img) {
-                    console.log("이미지 업데이트 호출중", img);
-                    editImgMemo(this.getAttribute('data-memo-id'), editTitle, editContent, img);
+                    // console.log("이미지 업데이트 호출중", img);
+                    editImgMemo(ecBtn.getAttribute('data-memo-id'), editTitle, editContent, img);
                 } else {
-                    console.log("메모 업데이트 호출중");
-                    editMemo(this.getAttribute('data-memo-id'), editTitle, editContent);
+                    // console.log("메모 업데이트 호출중");
+                    editMemo(ecBtn.getAttribute('data-memo-id'), editTitle, editContent);
                 }
             }
         });
 
-        new_memo.querySelector('.deleteBtn').addEventListener('click', function () {
+        deleteBtn.addEventListener('click', function () {
             // console.log("삭제버튼클릭됨");
-            const deleteImage = new_memo.querySelector('.imageMemo');
-            let image = null;
-            if (deleteImage) {
-                image = deleteImage.getAttribute('src');
-                deleteImageMemo(this.getAttribute('delete-memo-id'), image);
+            if (imageMemo) {
+                image = imageMemo.getAttribute('src');
+                deleteImageMemo(deleteBtn.getAttribute('delete-memo-id'), image);
             } else {
-                deleteMemo(this.getAttribute('delete-memo-id'));
+                deleteMemo(deleteBtn.getAttribute('delete-memo-id'));
             }
         });
     }
@@ -125,60 +131,51 @@ async function bringMemo() {
 
 async function editMemo(memoId, editTitle, editContent) {
     // console.log("수정하기위한데이터:", memoId, editTitle, editContent);
-    const response = await fetch(`/edit/${memoId}`, {
+    await fetchToExpress(`/edit/${memoId}`, {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({title: editTitle, content: editContent})
+        body: JSON.stringify({editTitle: editTitle, editContent: editContent})
     });
-    const data = await response.json();
-    console.log("수정후:", data);
-    location.reload();
 };
 
 async function editImgMemo(memoId, editTitle, editContent, img) {
     const formData = new FormData();
-    formData.append('title', editTitle);
-    formData.append('content', editContent);
+    formData.append('editTitle', editTitle);
+    formData.append('editContent', editContent);
     formData.append('editImage', img);
     
-    const response = await fetch(`/editImg/${memoId}`, {
+    await fetchToExpress(`/editImg/${memoId}`, {
         method: 'PUT',
         body: formData
     });
-    const data = await response.json();
-    console.log("이미지수정후:", data);
-    location.reload();
 };
 
 async function deleteImageMemo(memoId, imageinfo) {
-    console.log("이미지 삭제함수 불러짐:", memoId, imageinfo);
-    const response = await fetch(`/image/${memoId}`, {
+    // console.log("이미지 삭제함수 불러짐:", memoId, imageinfo);
+    await fetchToExpress(`/image/${memoId}`, {
         method: 'DELETE',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({image: imageinfo})
     });
-    const data = await response.json();
-    console.log(data);
-    location.reload();
 };
 
 async function deleteImage(img) {
-    console.log("이미지만 삭제 불러짐");
-    const response = await fetch(`/deleteImg/${img}`, {
+    // console.log("이미지만 삭제 불러짐");
+    await fetchToExpress(`/deleteImg/${img}`, {
         method: 'DELETE'
     });
-    const data = await response.json();
-    console.log(data);
-    location.reload();
 };
 
 async function deleteMemo(memoId) {
-    console.log("이미지 없는 삭제함수 불러짐:", memoId);
-    const response = await fetch(`/delete/${memoId}`, {
+    // console.log("이미지 없는 삭제함수 불러짐:", memoId);
+    await fetchToExpress(`/delete/${memoId}`, {
         method: 'DELETE'
     });
-    const data = await response.json();
-    console.log(data);
-    location.reload();
 };
 
+async function fetchToExpress(route, method = {}) {
+    const response = await fetch(route, method);
+    const data = await response.json();
+    // console.log(data);
+    bringMemo()
+};
