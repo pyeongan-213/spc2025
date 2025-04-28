@@ -2,18 +2,17 @@ document.addEventListener('DOMContentLoaded', () => {
     bringMemo();
     const title = document.getElementById('titleInput');
     const content = document.getElementById('contentInput');
+    const imageInput = document.getElementById('imageInput');
     
     document.getElementById('saveBtn').addEventListener('click', async () => {
-        const imageInput = document.getElementById('imageInput');
-        const formData = new FormData();
-        const image = imageInput.files[0];
         // console.log('imageInput 확인:', imageInput);
-
+        
         if (title.value !== "" && content.value !== "") {
+            const formData = new FormData();
             formData.append('title', title.value);
             formData.append('content', content.value);
-            if (image) {
-                formData.append('myImage', image);
+            if (imageInput.files[0]) {
+                formData.append('myImage', imageInput.files[0]);
             }
             // console.log("JS에서 메모 추가 전 데이터 확인:", title.value, content.value, imageInput);
         
@@ -22,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: formData
             });
 
-            bringMemo();
             title.value = '';
             content.value = '';
             imageInput.value = '';

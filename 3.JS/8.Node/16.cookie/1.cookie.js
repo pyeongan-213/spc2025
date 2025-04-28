@@ -3,7 +3,7 @@ const http = require('http')
 const server = http.createServer((req, res) => {
     console.log(req.url, req.headers.cookie);
     res.writeHead(200, {'Set-Cookie': 'your_number=1234'});
-    res.end('쿠키 받아가시오.');
+    res.end('cookie');
 });
 
 // cookie.txt 에서 your_number= 를 1111로 바꿨더니 콘솔창에 /hello your_number=1111로 뜸 (정상)
