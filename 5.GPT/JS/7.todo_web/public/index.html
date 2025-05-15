@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        #todo-list li { cursor: pointer; }
+        #todo-list li.completed { 
+            text-decoration: line-through; 
+            text-decoration-color: red; 
+            text-decoration-thickness: 2px;
+        }
+    </style>
+    <link rel="stylesheet" href="css/chatbot.css">
+    <script src="js/chatbot.js" defer></script>
+</head>
+<body>
+    <h1>투두 리스트</h1>
+    <input type="text" id="new-todo" placeholder="할일 적기" />
+    <button id="add-todo">Add</button>
+    <ul id="todo-list"></ul>
+
+    <script>
+        const todoList = document.getElementById('todo-list');
+        const addBtn = document.getElementById('add-todo');
+        const input = document.getElementById('new-todo');
+                
+        // 버튼 클릭시 추가 호출
+        addBtn.addEventListener('click', async () => {
+            // 입력값 읽어다가 백엔드 호출 ('/api/todos') POST
+            const text = input.value.trim();
+            if (!text) return;
+
+            // console.log("유저입력값: ", text);
+            // fetch('/api/todos', {
+            //     method: 'POST',
+            //     headers: {'Content-type': 'application/json'},
+            //     body: JSON.stringify({text})
+            // });
+            const response = await axios.post('/api/todos', {text})
+            const data = await response.data;
+            console.log('추가완료: ', data);
+
+            input.value = '';
+            renderTodos();
+        });
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') addBtn.click();
+        });
+
+        // 화면에 투두리스트 가져와서 뿌리기 (렌더링)
+        async function renderTodos() {
+            // 백엔드에서 받아오기 ('/api/todos') GET
+            // const response = await fetch('/api/todos');
+            const response = await axios.get('/api/todos');
+            const todos = response.data;
+
+            todoList.innerHTML = '';
+            console.log(todos);
+
+            todos.forEach((todo) => {
+                const li = document.createElement('li');
+                // li.innerHTML = `
+                //     <p class="todo-text">${todo.text}</p> <button class="deleteBtn">삭제</button>
+                // `
+                li.innerHTML = todo.text;
+                li.classList.toggle('completed', todo.completed);
+                        
+                // 클릭을 통해서 완료/취소 토글
+                li.addEventListener('click', async () => {
+                    await axios.put(`/api/todos/${todo.id}`);
+                    renderTodos();
+                });
+                // const text = li.querySelector(".todo-text");
+                // text.addEventListener('click', () => {
+                //     console.log("텍스트 클릭됨");
+                //     text.classList.toggle(text.style.textDecoration = "line-through");
+                // })
+
+                // 삭제버튼 추가
+                const deleteBtn = document.createElement('button');
+                deleteBtn.innerText = "삭제";
+                        
+                // const deleteBtn = li.querySelector(".deleteBtn");
+                deleteBtn.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    await axios.delete(`/api/todos/${todo.id}`);
+                    renderTodos();
+                    // delete_todo(todo.id);
+                });
+                        
+                li.appendChild(deleteBtn);
+                todoList.appendChild(li);
+
+            });
+        }
+
+        // async function delete_todo(id) {
+        //     console.log("delete_todo 함수에서 받아온 id: ", id);
+        //     const response = await axios.delete('/api/todos', {data: {id}});
+        //     const data = await response.data;
+        //     console.log("삭제요청후: ", data);
+        // }
+
+        renderTodos();
+    </script>
+</body>
+</html>
