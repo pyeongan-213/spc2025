@@ -1,9 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
-
-const todoRoutes = require('./routes/todoRoutes')
-const chatbot = require('./routes/chatbot')
+const todoRoutes = require('./routes/todoRoutes');
+const chatbot = require('./routes/chatbot_to_python');
 
 const app = express();
 const port = 3000;

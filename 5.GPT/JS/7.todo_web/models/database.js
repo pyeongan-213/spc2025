@@ -1,5 +1,5 @@
 const Database = require('better-sqlite3');
-const db = new Database("./todos.db");
+const db = new Database('./todos.db')
 
 const query = `
     CREATE TABLE IF NOT EXISTS todos (
